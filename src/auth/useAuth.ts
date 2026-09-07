@@ -43,10 +43,18 @@ export function useAuth() {
         }
     }
 
-    function tieneRolAdmin() : boolean {
-        const claims = account?.idTokenClaims as { roles? :string[] } | undefined;
-        return claims?.roles?.includes("ADMIN") ?? false;
+    async function tieneRolAdmin() : Promise<boolean> {
+        try {
+            const token = await getAccessToken();
+            const payloadBase64 = token.split(".")[1];
+            const payloadJson = atob(payloadBase64.replace(/-/g, "+").replace(/_/g, "/"));
+            const payload = JSON.parse(payloadJson) as { roles? : string[] };
+            return payload.roles?.includes("ADMIN") ?? false;
+        } catch {
+            return false;
+        }
     }
+
 
 
     return { isAuthenticated, account, login, logout, getAccessToken, tieneRolAdmin}

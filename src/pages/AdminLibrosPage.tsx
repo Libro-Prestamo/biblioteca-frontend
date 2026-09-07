@@ -9,6 +9,7 @@ export function AdminLibrosPage() {
     const [libros, setLibros] = useState<Libro[]>([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [esAdmin, setEsAdmin] = useState<boolean | null>(null);
 
     const [form, setForm] = useState<NuevoLibroRequest>({
         titulo : "",
@@ -16,6 +17,14 @@ export function AdminLibrosPage() {
         isbn : "",
         stock : 1,
     });
+
+    useEffect(() => {
+        if(!isAuthenticated) {
+            setEsAdmin(false);
+            return;
+        }
+        tieneRolAdmin().then(setEsAdmin);
+    }, [isAuthenticated]);
 
     function cargarLibros() {
         setCargando(true);
@@ -65,9 +74,8 @@ export function AdminLibrosPage() {
         );
     }
 
-    if (!tieneRolAdmin()) {
-        return <p>No tienes permisos de administrador para ver esta página.</p>;
-    }
+    if (esAdmin === null) return <p>Verificando permisos...</p>
+    if (!esAdmin) return <p>No tiene permisos de administrador para ver esta pagina.</p>
 
     return (
         <div>
