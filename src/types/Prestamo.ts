@@ -1,7 +1,13 @@
 export interface Prestamo {
     id : number;
-    libroId : number;
-    tituloLibro : string;
+    libro : {
+        id : number;
+        titulo : string;
+        autor : string;
+        isbn : string;
+        stock : number;
+        disponible : boolean;
+    };
     usuario : string;
     fechaPrestamo : string;
     fechaDevolucion : string | null;

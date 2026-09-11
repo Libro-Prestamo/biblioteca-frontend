@@ -30,7 +30,7 @@ export function MisPrestamosPage() {
                 <ul>
                     {prestamos.map((p) => (
                         <li key={p.id}>
-                            {p.tituloLibro} - {p.estado}
+                            {p.libro.titulo} - {p.estado}
                         </li>
                     ))}
                 </ul>
