@@ -1,6 +1,6 @@
 import type { Libro } from "../types/Libro"
 
-const API_BASE_URL = "http://localhost:8080"
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export async function obtenerLibrosPublicos() : Promise<Libro[]> {
     
@@ -28,7 +28,6 @@ export async function obtenerLibroPorId(id :  string, accessToken : string) : Pr
 }
 
 
-
 export interface NuevoLibroRequest {
     titulo : string;
     autor : string;
@@ -54,7 +53,7 @@ export async function crearLibro (request : NuevoLibroRequest, accessToken : str
 }
 
 export async function eliminarLibro(id : number, accessToken : string) : Promise<void> {
-    const response = await fetch(`${API_BASE_URL}/api/admin/libros${id}`, {
+    const response = await fetch(`${API_BASE_URL}/api/admin/libros/${id}`, {
         method : "DELETE",
         headers : {
             Authorization : `Bearer ${accessToken}`,
